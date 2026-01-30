@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms</title>
+    <link rel="stylesheet" href="/css/cri.css">
+</head>
+<body>
+    <form id="myform">
+
+  <label>First Name:</label>
+  <input class="inform" type="text" id="fname"
+         placeholder="Enter your name"
+         pattern="[A-Za-z]+"
+         title="Only letters allowed"
+         required>
+
+  <label>Last Name:</label>
+  <input class="inform" type="text" id="lname"
+         placeholder="Enter your name"
+         pattern="[A-Za-z]+"
+         title="Only letters allowed"
+         required>
+
+  <label>Email id:</label>
+  <input class="inform" type="email" id="email"
+         placeholder="Enter your Email"
+         required>
+
+  <label>Phone Number:</label>
+  <input class="inform" type="tel" id="ph"
+         pattern="[0-9]{10}"
+         title="Enter 10 digit number"
+         placeholder="Enter your Number"
+         required>
+
+  <input class="butt" type="submit" value="Submit">
+
+</form>
+
+<hr>
+
+<h3>Entered Details:</h3>
+<table>
+       <tr>
+              <th>First name</th>
+              <th>Last Name</th>
+              <th>EMail Id</th>
+              <th>ph Number</th>
+              <th>Action</th>
+              
+       </tr>
+       <tbody id="output"></tbody>
+</table>
+<script>
+  let data = [];
+  let editIndex = -1;
+
+  document.getElementById("myform").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let fname = document.getElementById("fname").value;
+    let lname = document.getElementById("lname").value;
+    let email = document.getElementById("email").value;
+    let phone = document.getElementById("ph").value;
+
+    if (editIndex === -1) {
+      data.push({ fname, lname, email, phone });
+    } else {
+      data[editIndex] = { fname, lname, email, phone };
+      editIndex = -1;
+    }
+
+    showData();
+    this.reset();
+  });
+
+  function showData() {
+    let rows = "";
+
+    data.forEach((item, index) => {
+      rows += `
+        <tr>
+          <td>${item.fname}</td>
+          <td>${item.lname}</td>
+          <td>${item.email}</td>
+          <td>${item.phone}</td>
+          <td>
+            <button onclick="editData(${index})">Edit</button>
+            <button onclick="deleteData(${index})">Delete</button>
+          </td>
+        </tr>
+      `;
+    });
+
+    document.getElementById("output").innerHTML = rows;
+  }
+
+  function editData(index) {
+    document.getElementById("fname").value = data[index].fname;
+    document.getElementById("lname").value = data[index].lname;
+    document.getElementById("email").value = data[index].email;
+    document.getElementById("ph").value = data[index].phone;
+
+    editIndex = index;
+  }
+
+  function deleteData(index) {
+    data.splice(index, 1);
+    showData();
+  }
+</script>
+
+
+
+</body>
+ 
+</html>
